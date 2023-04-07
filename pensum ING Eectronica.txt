@@ -1,0 +1,47 @@
+codigo,nombre,creditos,hd,ha,(pedir al usuario)horario.
+2555101,algebra y trigonometria,3,4,5
+2555121,geometria vectorial y analitica,3,4,5
+2555131,calculo diferencial,3,4,5
+2536101,descubriendo la fisica,3,4,5
+2598511,informatica  I,4,7,8
+2537101,vivamos la universidad,1,1,2
+2538101,ingles  I, 1,1,2
+2555221,algebra lineal,3,4,5
+2555231,calculo integral,3,4,5
+2536201,fisica mecanica,3,4,5
+2598521,informatica II,4,7,8
+2598522,introduccion a la ingenieria electronica,1,1,2
+2539101,lectoescritura,3,4,5
+2538201,ingles 2,1,1,2
+2555331,calculo vectorial,3,4,5
+2536301,fisica de ondas y moderna,3,4,5
+2598531,ecuaciones diferenciales,3,4,5
+2598532,circuitos electricos 1,4,7,8
+2599431,probabilidad y estadistica,3,4,5
+2538301,ingles 3,1,1,2
+2517362,formacion ciudadana y constitucional,3,4,5
+2536311,fisica de campos,3,4,5
+2598541,matematicas especiales,3,4,5
+2598542,circuitos electricos 2,4,7,8
+2598543,matematicas discretas,3,4,5
+2598544,metodos numericos,3,4,5
+2538401,ingles 4,1,1,2
+2536502,laboratorio integrado de fisica,2,6,0
+2598551,fisica del estado solido,3,4,5
+2598552,electronica analogica 1,4,7,8
+2598553,electronica digital 1,4,7,8
+2598554,electromagnetismo,3,4,5
+2538501,ingles 5,1,1,2
+2598561,electronica analogica 2,4,7,8
+2598562,electronica digital 2,4,7,8
+2598563,sistemas de control continuo,4,7,8
+2599461,tratamieno de señales 1,4,7,8
+2538601,ingles 6,1,1,2
+2598571,electronica digital 3,4,7,8
+2598572,tratamiento de señales 2,4,7,8
+2598573,acondicionamiento de señales,4,7,8
+2598574,maquinas electricas,4,7,8
+2599475,procesamiento digital de señales,4,7,8
+2598581,electronica de potencia,4,7,8
+2599462,redes de computadores 1,3,4,5
+2598591,seminario ingenieria electronica,1,3,0
