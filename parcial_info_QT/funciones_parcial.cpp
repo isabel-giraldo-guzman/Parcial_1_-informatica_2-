@@ -148,3 +148,99 @@ void separar_archivo_fin(unsigned long long  tamaño,unsigned long long tamaño_
 void separar_caracter(unsigned long long  tamaño,char* original,char*separado){
 
 }
+
+unsigned long long tamaño_max_for(char* archivo,char caracter,unsigned long long cantidad_ln){
+ unsigned long long tamaño,tamaño2=0,tamaño3=0;
+ for(tamaño=0;cantidad_ln>0;tamaño++,tamaño3++){
+     if(*(archivo+tamaño3)==caracter){
+         if(tamaño2<tamaño){tamaño2=tamaño;}
+     cantidad_ln--;
+     tamaño=0;
+     }}
+ return tamaño2;
+}
+
+void separar_char_ln(char** separar_lineas,unsigned long long cantidad_salto_linea,unsigned long long max_tam_matriz, char caracter,char* archivo){
+    unsigned long long contador=0,m,r;
+    for(unsigned long long i=0;i<cantidad_salto_linea;i++){
+        for(unsigned long long k=0;k<max_tam_matriz;k++){separar_lineas[i][k]='\0';}
+    }
+    for(unsigned long long i=0;0<cantidad_salto_linea;i++){
+        for(unsigned long long k=0;k<max_tam_matriz;k++,contador++){
+       if(archivo[contador]==caracter){if(k%max_tam_matriz!=0){
+               r=k%max_tam_matriz;
+               m=max_tam_matriz-r;
+               k=k+m;
+           }
+           cantidad_salto_linea--;
+       }
+       else{separar_lineas[i][k]=archivo[contador];
+       cout<<separar_lineas[i][k];
+       }
+        }
+    cout<<endl;}
+
+    for(unsigned long long i=0;i<cantidad_salto_linea;i++){
+        for(unsigned long long k=0;k<max_tam_matriz;k++){
+
+            if(separar_lineas[i][k]=='\r'){separar_lineas[i][k]='\0';}}
+    }
+    for(unsigned long long i=0;i<cantidad_salto_linea;i++){
+        for(unsigned long long k=0;k<max_tam_matriz;k++){cout<<separar_lineas[i][k];}
+        cout<<endl;
+    }
+
+}
+
+unsigned long long tamaño_matriz_conjuntos_punto_c(char **matriz,char caracter,unsigned long long cantidad_ln){
+    unsigned long long tamaño2=0,tamaño3=0,cantidad_p_c=5;
+    caracter=',';
+    /*for(unsigned long long i=0;i<cantidad_ln;i++){
+        for(unsigned long long k=0;matriz[i][k]=!'\0';k++){
+            if(matriz[i][k]=';'){cantidad_p_c++;}
+        }
+    }*/
+
+
+    for(unsigned long long tamaño=0;tamaño<cantidad_ln;tamaño++){
+        tamaño2=tamaño_max_for(matriz[tamaño],caracter,cantidad_p_c);//cantidad_ln ahora debe ser ;
+        if(tamaño3<tamaño2){tamaño3=tamaño2;}
+    }
+    return tamaño3;
+
+}
+void matriz_separada(char** matriz_punter[5],char**spp_lineas,unsigned long long tamaño_Caracter_matriz,unsigned long long caracter_salto_linea,int conjuntos,unsigned long long max_tamaño){
+    char grupitos[tamaño_Caracter_matriz];
+    unsigned long long z,g;
+    for(unsigned long long i=0;i<caracter_salto_linea;i++){
+        for(unsigned long long k=0,z=0;k<conjuntos;z++){//maximo tamaño de los conjuntos
+            for(unsigned long long p=0,g=0;p<tamaño_Caracter_matriz;g++,z++){
+                if(spp_lineas[i][z]==','){
+                    grupitos[g+1]='\0';
+                    matriz_punter[i][k]=grupitos;
+                    g=0;
+                    p=tamaño_Caracter_matriz;
+
+                }
+                else{
+                    grupitos[g]=spp_lineas[i][z];
+                    cout<<grupitos[g];
+                }
+            }
+        }
+    }
+}
+
+void inc_matriz_3(char***matriz,unsigned long long tamaño_Caracter_matriz,int conjuntos,unsigned long long caracter_salto_linea){
+    for (int i = 0; i < tamaño_Caracter_matriz; ++i) {
+        matriz[i] = new char*[conjuntos];
+        for (int j = 0; j < conjuntos; ++j) {
+            matriz[i][j] = new char[caracter_salto_linea];
+            for (int k = 0; k < caracter_salto_linea; ++k) {
+                matriz[i][j][k] = '0'; // asignación de valores
+            }
+        }
+    }
+}
+
+
