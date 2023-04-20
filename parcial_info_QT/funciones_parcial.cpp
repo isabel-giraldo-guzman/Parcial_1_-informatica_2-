@@ -168,6 +168,8 @@ void separar_char_ln(char** separar_lineas,unsigned long long cantidad_salto_lin
     for(unsigned long long i=0;0<cantidad_salto_linea;i++){
         for(unsigned long long k=0;k<max_tam_matriz;k++,contador++){
        if(archivo[contador]==caracter){if(k%max_tam_matriz!=0){
+               //antes de cada salto de linea hay \r y luego \n que nos expresa un enter
+               separar_lineas[i][k-1]='\0';//le comocamos un caracter nulo para indicar que finaliza el arreglo
                r=k%max_tam_matriz;
                m=max_tam_matriz-r;
                k=k+m;
@@ -175,19 +177,20 @@ void separar_char_ln(char** separar_lineas,unsigned long long cantidad_salto_lin
            cantidad_salto_linea--;
        }
        else{separar_lineas[i][k]=archivo[contador];
-       cout<<separar_lineas[i][k];
+       //cout<<separar_lineas[i][k];
        }
         }
-    cout<<endl;}
-
-    for(unsigned long long i=0;i<cantidad_salto_linea;i++){
+    //cout<<endl;
+    }
+// esta la podemos eliminar creo ya que modificamos anteriormente el \r
+   /* for(unsigned long long i=0;i<cantidad_salto_linea;i++){
         for(unsigned long long k=0;k<max_tam_matriz;k++){
 
             if(separar_lineas[i][k]=='\r'){separar_lineas[i][k]='\0';}}
-    }
+    }*/
     for(unsigned long long i=0;i<cantidad_salto_linea;i++){
         for(unsigned long long k=0;k<max_tam_matriz;k++){cout<<separar_lineas[i][k];}
-        cout<<endl;
+       // cout<<endl;
     }
 
 }
@@ -196,7 +199,7 @@ unsigned long long tamaño_matriz_conjuntos_punto_c(char **matriz,char caracter,
     unsigned long long tamaño2=0,tamaño3=0,cantidad_p_c=5;
     caracter=',';
     /*for(unsigned long long i=0;i<cantidad_ln;i++){
-        for(unsigned long long k=0;matriz[i][k]=!'\0';k++){
+        for(unsigned long long k=0;matriz[i][k]!='\0';k++){
             if(matriz[i][k]=';'){cantidad_p_c++;}
         }
     }*/
@@ -209,38 +212,227 @@ unsigned long long tamaño_matriz_conjuntos_punto_c(char **matriz,char caracter,
     return tamaño3;
 
 }
-void matriz_separada(char** matriz_punter[5],char**spp_lineas,unsigned long long tamaño_Caracter_matriz,unsigned long long caracter_salto_linea,int conjuntos,unsigned long long max_tamaño){
-    char grupitos[tamaño_Caracter_matriz];
-    unsigned long long z,g;
-    for(unsigned long long i=0;i<caracter_salto_linea;i++){
-        for(unsigned long long k=0,z=0;k<conjuntos;z++){//maximo tamaño de los conjuntos
-            for(unsigned long long p=0,g=0;p<tamaño_Caracter_matriz;g++,z++){
-                if(spp_lineas[i][z]==','){
-                    grupitos[g+1]='\0';
-                    matriz_punter[i][k]=grupitos;
-                    g=0;
-                    p=tamaño_Caracter_matriz;
-
-                }
-                else{
-                    grupitos[g]=spp_lineas[i][z];
-                    cout<<grupitos[g];
-                }
-            }
-        }
-    }
-}
-
-void inc_matriz_3(char***matriz,unsigned long long tamaño_Caracter_matriz,int conjuntos,unsigned long long caracter_salto_linea){
-    for (int i = 0; i < tamaño_Caracter_matriz; ++i) {
-        matriz[i] = new char*[conjuntos];
+void matriz_separada(char**** matriz_punter,char**spp_lineas,unsigned long long tamaño_Caracter_matriz,unsigned long long caracter_salto_linea,int conjuntos,unsigned long long max_tamaño){
+    //inicializamos el puntero  no la podemos inicializar aqui
+   /* for (unsigned long long i = 0; i < caracter_salto_linea; ++i) {
+        (*matriz_punter)[i] = new char*[conjuntos];
         for (int j = 0; j < conjuntos; ++j) {
-            matriz[i][j] = new char[caracter_salto_linea];
-            for (int k = 0; k < caracter_salto_linea; ++k) {
-                matriz[i][j][k] = '0'; // asignación de valores
+            (*matriz_punter)[i][j] = new char[tamaño_Caracter_matriz];
+            for (unsigned long long k = 0; k < tamaño_Caracter_matriz; ++k) {
+                (*matriz_punter)[i][j][k] = '\0'; // asignación de valores este caso caracter nulo
+            }
+        }
+    }
+*/
+    char matriz_temp[caracter_salto_linea][conjuntos][max_tamaño];//mirar luego el max tamaño
+    //inicializamos la matriz
+    for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
+     for(unsigned long long columna=0;columna<conjuntos;columna++){
+         for(unsigned long long caracter=0;caracter<max_tamaño;caracter++){
+             matriz_temp[fila][columna][caracter]='\0';
+         }
+     }
+    }
+    char grupitos[max_tamaño];
+    for(unsigned long long reset=0;reset<max_tamaño;reset++){
+        grupitos[reset]='\0';
+    }
+    unsigned long long z,g,comas=0;
+    for(unsigned long long i=0;i<caracter_salto_linea;i++){
+
+        for(unsigned long long k=0,z=0,comas=0;k<conjuntos;z++,k++){//maximo tamaño de los conjuntos
+           // probar con max_tamaño
+            for(unsigned long long p=0,g=0;p<max_tamaño;p++,g++,z++){
+
+                if(spp_lineas[i][z]==',' or (spp_lineas[i][z]=='\0' and conjuntos==(comas+1))){
+                    grupitos[g+1]='\0';
+                   /* for(unsigned long long pass=0;pass<g+1;pass++){
+                        (*(*(*(*(matriz_punter)+i)+k)+pass))=grupitos[pass];
+                    }
+                   //(*(*(matriz_punter+i)+k)=grupitos;
+                    //(*(*(*(matriz_punter)+i)+k))=grupitos;*/
+                    //matriz_temp[i][k]=grupitos;
+
+                    for(unsigned long long pass=0;pass<g+1;pass++){
+                                            matriz_temp[i][k][pass]=grupitos[pass];
+                                            (*(*(*(*(matriz_punter)+i)+k)+pass))=grupitos[pass];
+                                           // for(unsigned long long l=g+1;l<max_tamaño;l++){matriz_temp[i][k][pass]='\0';}
+                                        }
+
+                    for(unsigned long long reset=0;reset<g;reset++){grupitos[reset]='\0';}
+
+                    p=max_tamaño;
+                    //cout<<"  ";
+                    z=z-1;
+                    g=-1;
+                    comas++;
+                    //k++;
+                }
+                else{if ((spp_lineas[i][z] >= 'A' and spp_lineas[i][z] <= 'Z') or
+                         (spp_lineas[i][z] >= 'a' and spp_lineas[i][z] <= 'z') or
+                         (spp_lineas[i][z] >= '0' and spp_lineas[i][z] <= '9') or
+                         (spp_lineas[i][z] == ' ') or spp_lineas[i][z] <= 'ñ' or
+                         spp_lineas[i][z] <= 'Ñ'){
+
+                        grupitos[g]=spp_lineas[i][z];
+                        //cout<<grupitos[g];
+                    //(*(*(*(*(matriz_punter)+i)+k)+g))=(grupitos[g]);
+                    }
+
+            }
+            //cout<<"--";
+        }}}
+       // cout<<endl;}
+    //imprimimos la matriz temporal
+
+   /*     for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
+         for(unsigned long long columna=0;columna<conjuntos;columna++){
+             for(unsigned long long caracter=0;caracter<max_tamaño;caracter++){
+                 if((*(*(*(*(matriz_punter)+fila)+columna)+caracter))=='\0'){caracter=max_tamaño;}
+                 else{
+                 cout<<(*(*(*(*(matriz_punter)+fila)+columna)+caracter));}
+             }cout<<" ";
+         }cout<<endl;
+}  */     //pasamos lo de la matriz temporal a nuestro puntero
+   /*     for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
+            for(unsigned long long columna=0;columna<conjuntos;columna++){
+                for(unsigned long long caracter=0;caracter<max_tamaño;caracter++){
+                   (*(*(*(*(matriz_punter)+fila)+columna)+caracter))=matriz_temp[fila][columna][caracter];
+
+                    /*if(matriz_temp[fila][columna][caracter]=='\0'){
+                        (*(*(*(*(matriz_punter)+fila)+columna)+caracter))='\0';
+                        caracter=max_tamaño+1;
+                    } else {
+                        (*(*(*(*(matriz_punter)+fila)+columna)+caracter))=matriz_temp[fila][columna][caracter];
+                    }*/
+                   // cout<<(*(*(*(*(matriz_punter)+fila)+columna)+caracter));
+          //      }
+                //cout<<" ";
+        //    }
+            //cout<<endl;
+      //  }     */
+
+}
+
+//intentemolos devolviendo la matriz a ver que pedo
+char*** matriz_separada_v2(char*** matriz_punter,char**spp_lineas,unsigned long long tamaño_Caracter_matriz,unsigned long long caracter_salto_linea,int conjuntos,unsigned long long max_tamaño){
+    char grupitos[max_tamaño];
+    for(unsigned long long reset=0;reset<max_tamaño;reset++){
+        grupitos[reset]='\0';
+    }
+    unsigned long long z,g,comas=0;
+    for(unsigned long long i=0;i<caracter_salto_linea;i++){
+
+        for(unsigned long long k=0,z=0,comas=0;k<conjuntos;z++,k++){//maximo tamaño de los conjuntos
+           // probar con max_tamaño
+            for(unsigned long long p=0,g=0;p<max_tamaño;p++,g++,z++){
+
+                if(spp_lineas[i][z]==',' or (spp_lineas[i][z]=='\0' and conjuntos==(comas+1))){
+                    grupitos[g+1]='\0';
+                   matriz_punter[i][k]=grupitos;
+
+                    for(unsigned long long reset=0;reset<g;reset++){grupitos[reset]='\0';}
+
+                    p=max_tamaño;
+                    //cout<<"  ";
+                    z=z-1;
+                    g=-1;
+                    comas++;
+                    //k++;
+                }
+                else{if ((spp_lineas[i][z] >= 'A' and spp_lineas[i][z] <= 'Z') or
+                         (spp_lineas[i][z] >= 'a' and spp_lineas[i][z] <= 'z') or
+                         (spp_lineas[i][z] >= '0' and spp_lineas[i][z] <= '9') or
+                         (spp_lineas[i][z] == ' ')){
+
+                        grupitos[g]=spp_lineas[i][z];
+                        cout<<grupitos[g];}}
+            }
+            cout<<"--";
+            }
+        cout<<endl;}
+    return matriz_punter;
+    }
+
+  // seria una matriz[filas][columnas][tamaño de las columnas]
+void inc_matriz_3(char****matriz,unsigned long long tamaño_Caracter_matriz,int conjuntos,unsigned long long caracter_salto_linea){
+    for (unsigned long long i = 0; i < caracter_salto_linea; ++i) {
+        (*matriz)[i] = new char*[conjuntos];
+        for (int j = 0; j < conjuntos; ++j) {
+            (*matriz)[i][j] = new char[tamaño_Caracter_matriz];
+            for (unsigned long long k = 0; k < tamaño_Caracter_matriz; ++k) {
+                (*matriz)[i][j][k] = '0'; // asignación de valores
             }
         }
     }
 }
 
+
+void liberarMemoria_matriz_3(char*** matriz, unsigned long long tamaño_Caracter_matriz, int conjuntos, unsigned long long caracter_salto_linea) {
+    for (unsigned long long i = 0; i < caracter_salto_linea; ++i) {
+        for (int j = 0; j < conjuntos; ++j) {
+            delete[] matriz[i][j];
+        }
+        delete[] matriz[i];
+    }
+    delete[] matriz;
+}
+
+void liberarMemoria_horario_int(unsigned long long*** matriz, unsigned long long tamaño_Caracter_matriz, int conjuntos, unsigned long long caracter_salto_linea) {
+    for (unsigned long long i = 0; i < caracter_salto_linea; ++i) {
+        for (int j = 0; j < conjuntos; ++j) {
+            delete[] matriz[i][j];
+        }
+        delete[] matriz[i];
+    }
+    delete[] matriz;
+}
+
+void matriz_separada_imprimir(char*** matriz, unsigned long long tamaño_Caracter_matriz, int conjuntos, unsigned long long caracter_salto_linea){
+
+    for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
+
+        for(unsigned long long columna=0;columna<conjuntos;columna++){
+
+            for(unsigned long long tamaño_caracteres=0;matriz[fila][columna][tamaño_caracteres]=!'\0';tamaño_caracteres++){
+                cout<<matriz[fila][columna][tamaño_caracteres];
+            }
+            cout<< "||";
+        }
+          cout<< "__";
+    }
+}
+
+void matriz_separada_imprimirV2(char**** puntero, unsigned long long tamaño, int columnas, unsigned long long filas) {
+    for(unsigned long long fila=0;fila<filas;fila++){
+             for(unsigned long long columna=0;columna<columnas;columna++){
+                 for(unsigned long long caracter=0;caracter<tamaño;caracter++){
+                     if((*(*(*(*(puntero)+fila)+columna)+caracter))=='\0'){caracter=tamaño;}
+                     else{
+                     cout<<(*(*(*(*(puntero)+fila)+columna)+caracter));}
+                 }cout<<" ";
+             }cout<<endl;
+    }
+}
+
+void inc_matriz_horario(char**** matriz, unsigned long long tamaño_materia, int dias, unsigned long long horas, unsigned long long hora_inicio, unsigned long long hora_fin) {
+    for (unsigned long long k = 0; k < horas; k++) {
+        for (int j = 0; j < dias; j++) {
+            for (unsigned long long i = 0; i < tamaño_materia; i++) {
+                if (k == 0 && j > 1) {
+                    // Corrección en la asignación de valores a la matriz
+                    (*(*(*(*(matriz + k) + j) + i))) = hora_inicio;
+                    (*(*(*(*(matriz + k) + j) + i) + 1)) = '-';
+                    (*(*(*(*(matriz + k) + j) + i) + 2)) = hora_inicio + 1;
+                    (*(*(*(*(matriz + k) + j) + i) + 3)) = '\0';
+
+                    cout<<(*(*(*(*(matriz + k) + j) + i) ));
+                    cout<<(*(*(*(*(matriz + k) + j) + i) + 1));
+                    cout<<(*(*(*(*(matriz + k) + j) + i) + 2));
+                    cout<<(*(*(*(*(matriz + k) + j) + i) + 3));
+                }
+            }
+        }
+    }
+}
 
