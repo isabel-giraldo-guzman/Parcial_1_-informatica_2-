@@ -18,25 +18,13 @@ unsigned long long tamaño_pensum(char *nombre_pensum){
 }}
 
 void leer_pensum1(unsigned long long  tamaño,char* datoss,char* pensum_nombre){
-//char linea[500];//toca darle una cantidad para poder inicializarlo entonces estamos diciendo que cada linea no tiene mas de 500 caracteres
 char letra;
 char datos[tamaño];
-    //char name_text[1000];//estamos diciendo que el nombre del texto no puede tener mas de 1000 caracteres
-    //int tamaño_nombre_pensum=0;
-    //for (long long int numero=0;numero<1000;numero++){name_text[numero]='\0';}//inicializamos toda la matriz con caracter nulo
-    //cout<<"ingrese el lugar donde esta guardado el pensum: "<<endl;
-    //cin>>name_text;
-    //for(int i=0;name_text[i]!='\0';i++){cout<<name_text[i];tamaño_nombre_pensum++;}
-    //char name_texto_2[tamaño_nombre_pensum+1];
-    //name_texto_2[tamaño_nombre_pensum]='\0';
-    //pensum_nombre=&name_text[0];
-    //for(int k=0;name_text[k]=!'\0';k++){*(pensum_nombre+k)=name_text[k];}
-    //for (int k=0;k<tamaño_nombre_pensum;k++){name_texto_2[k]=name_text[k];}// para imprimir la ruta
-    //cout<<endl;
+
     fstream base_de_datos;
 
     base_de_datos.open(pensum_nombre,ios::in | ios::binary | ios::ate);//parametro de entrada binario y coloca el cursor al final del texto
- //   base_de_datos.open("D:/Pensum.txt",ios::in | ios::binary | ios::ate);
+
 
     if(base_de_datos.is_open()){
         base_de_datos.seekg(0);//colocamos el puntero en la primer posicion
@@ -213,17 +201,7 @@ unsigned long long tamaño_matriz_conjuntos_punto_c(char **matriz,char caracter,
 
 }
 void matriz_separada(char**** matriz_punter,char**spp_lineas,unsigned long long tamaño_Caracter_matriz,unsigned long long caracter_salto_linea,int conjuntos,unsigned long long max_tamaño){
-    //inicializamos el puntero  no la podemos inicializar aqui
-   /* for (unsigned long long i = 0; i < caracter_salto_linea; ++i) {
-        (*matriz_punter)[i] = new char*[conjuntos];
-        for (int j = 0; j < conjuntos; ++j) {
-            (*matriz_punter)[i][j] = new char[tamaño_Caracter_matriz];
-            for (unsigned long long k = 0; k < tamaño_Caracter_matriz; ++k) {
-                (*matriz_punter)[i][j][k] = '\0'; // asignación de valores este caso caracter nulo
-            }
-        }
-    }
-*/
+
     char matriz_temp[caracter_salto_linea][conjuntos][max_tamaño];//mirar luego el max tamaño
     //inicializamos la matriz
     for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
@@ -246,17 +224,11 @@ void matriz_separada(char**** matriz_punter,char**spp_lineas,unsigned long long 
 
                 if(spp_lineas[i][z]==',' or (spp_lineas[i][z]=='\0' and conjuntos==(comas+1))){
                     grupitos[g+1]='\0';
-                   /* for(unsigned long long pass=0;pass<g+1;pass++){
-                        (*(*(*(*(matriz_punter)+i)+k)+pass))=grupitos[pass];
-                    }
-                   //(*(*(matriz_punter+i)+k)=grupitos;
-                    //(*(*(*(matriz_punter)+i)+k))=grupitos;*/
-                    //matriz_temp[i][k]=grupitos;
+
 
                     for(unsigned long long pass=0;pass<g+1;pass++){
                                             matriz_temp[i][k][pass]=grupitos[pass];
                                             (*(*(*(*(matriz_punter)+i)+k)+pass))=grupitos[pass];
-                                           // for(unsigned long long l=g+1;l<max_tamaño;l++){matriz_temp[i][k][pass]='\0';}
                                         }
 
                     for(unsigned long long reset=0;reset<g;reset++){grupitos[reset]='\0';}
@@ -275,42 +247,13 @@ void matriz_separada(char**** matriz_punter,char**spp_lineas,unsigned long long 
                          spp_lineas[i][z] <= 'Ñ'){
 
                         grupitos[g]=spp_lineas[i][z];
-                        //cout<<grupitos[g];
-                    //(*(*(*(*(matriz_punter)+i)+k)+g))=(grupitos[g]);
+
                     }
 
             }
-            //cout<<"--";
+
         }}}
-       // cout<<endl;}
-    //imprimimos la matriz temporal
 
-   /*     for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
-         for(unsigned long long columna=0;columna<conjuntos;columna++){
-             for(unsigned long long caracter=0;caracter<max_tamaño;caracter++){
-                 if((*(*(*(*(matriz_punter)+fila)+columna)+caracter))=='\0'){caracter=max_tamaño;}
-                 else{
-                 cout<<(*(*(*(*(matriz_punter)+fila)+columna)+caracter));}
-             }cout<<" ";
-         }cout<<endl;
-}  */     //pasamos lo de la matriz temporal a nuestro puntero
-   /*     for(unsigned long long fila=0;fila<caracter_salto_linea;fila++){
-            for(unsigned long long columna=0;columna<conjuntos;columna++){
-                for(unsigned long long caracter=0;caracter<max_tamaño;caracter++){
-                   (*(*(*(*(matriz_punter)+fila)+columna)+caracter))=matriz_temp[fila][columna][caracter];
-
-                    /*if(matriz_temp[fila][columna][caracter]=='\0'){
-                        (*(*(*(*(matriz_punter)+fila)+columna)+caracter))='\0';
-                        caracter=max_tamaño+1;
-                    } else {
-                        (*(*(*(*(matriz_punter)+fila)+columna)+caracter))=matriz_temp[fila][columna][caracter];
-                    }*/
-                   // cout<<(*(*(*(*(matriz_punter)+fila)+columna)+caracter));
-          //      }
-                //cout<<" ";
-        //    }
-            //cout<<endl;
-      //  }     */
 
 }
 
@@ -654,11 +597,7 @@ void datos_materias(char****pensum,char****materias,unsigned long long****horari
          imp_horario(*horario,hora_total,7,tam_max,hora_inicio_estudio,hora_fin_estudio);
          }
          }
-         //int horas_t_semana= horas_t_clase;
-         //int horas_ttss= horas_t_semana+horas_t_clase;
-         //cout<<"las horas de clase totales de esa materia en la semana son: "<<horas_ttss<< "\n";
-         //comparas horas_ttss (horas totales semana de esa materia) con las horas docente del pensum
-         //int horas_ttss= horas_t_semana+horas_t_clase;
+
          }//cierre while escoger dia clase
          }
 
