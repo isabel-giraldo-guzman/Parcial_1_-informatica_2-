@@ -376,6 +376,19 @@ void liberarMemoria_matriz_3(char*** matriz, unsigned long long tamaño_Caracter
         delete[] matriz[i];
     }
     delete[] matriz;
+
+}
+
+void inicializar_horary(unsigned long long**** horary, unsigned long long tamaño, int dias, unsigned long long horas_total) {
+    for (unsigned long long i = 0; i <= horas_total; i++) {
+        (*horary)[i] = new unsigned long long*[dias + 1];
+        for (int j = 0; j <= dias; j++) {
+            (*horary)[i][j] = new unsigned long long[tamaño];
+            for (unsigned long long k = 0; k < tamaño; k++) {
+                ((*horary)[i][j][k]) = 0;
+            }
+        }
+    }
 }
 
 void liberarMemoria_horario_int(unsigned long long*** matriz, unsigned long long tamaño_Caracter_matriz, int conjuntos, unsigned long long caracter_salto_linea) {
@@ -436,3 +449,77 @@ void inc_matriz_horario(char**** matriz, unsigned long long tamaño_materia, int
     }
 }
 
+bool existe_cod(char****pensum,int codigo_materia,unsigned long long materias_pensum,unsigned long long tam_c_pensum){
+    char codigo_m[tam_c_pensum];
+    char codigo_mf[tam_c_pensum];
+    unsigned long long contador=0,cd=codigo_materia;
+    for(unsigned long long i=0;i<tam_c_pensum;i++){codigo_m[i]='\0';codigo_mf[i]='\0';}
+    //pasamos de int a char modificar int por numero mas grande
+
+    while ((cd > 0) and (contador < tam_c_pensum)) { // Asegurar que cd sea mayor a 0 y contador esté dentro de los límites del arreglo
+        int modulo = cd % 10;
+        codigo_m[contador] = modulo + 48;
+        cd = cd / 10;
+        contador++; // Incrementar contador en cada iteración
+    }
+    for(int voltear=0,n=1;voltear<contador;voltear++,n++){
+        codigo_mf[voltear]=codigo_m[contador-n];}
+codigo_mf[contador]='\0';//le colocamos el valor nulo para decir que se termina el arreglo
+
+    unsigned long long contador2=contador;
+    for(unsigned long long materias=0;materias<materias_pensum;materias++){
+        for(unsigned long long codigo=0,contador2=contador;((*pensum)[materias][0][codigo])!='\0';codigo++)//la posicion 0 es la del codigo
+            if (((*pensum)[materias][0][codigo])==(codigo_mf[codigo])){
+                contador2--;
+            if((contador2==0) and (((*pensum)[materias][0][codigo+1])=='\0')){return true;}
+            }
+    }
+    return false;
+}
+void imp_horario(unsigned long long *** horario,unsigned long long hora_total,int dias,unsigned long long tamaño_Caracter_matriz,unsigned long long hora_inic,unsigned long long hora_fin){
+int diass=0;
+    for(unsigned long long i=0;i<hora_total+1;i++){
+    for(int j=0;j<dias+1;j++){
+
+
+
+        for(unsigned long long k=0;k<tamaño_Caracter_matriz;k++){
+            if(i>0 and j>0){horario[i][j][k]=0;
+            horario[i][j][k+1]='\0';
+            cout<<horario[i][j][k];
+            k=tamaño_Caracter_matriz;}
+           if(i==0 and j==0){horario[i][j][k]='\0';
+           cout<<"H-D  ";
+           k=tamaño_Caracter_matriz;}
+            if(i>0 and j==0){
+                cout<<endl;
+                horario[i][j][k]=hora_inic;
+                horario[i][j][k+1]=hora_inic+1;
+                horario[i][j][k+2]='\0';
+                hora_inic++;
+                if(horario[i][j][k]<9){cout<<"0"<<horario[i][j][k]<<'-'<<"0"<<horario[i][j][k+1]<<" ";}
+                else if((horario[i][j][k]==9)){cout<<"0"<<horario[i][j][k]<<'-'<<horario[i][j][k+1]<<" ";}
+                else{
+                cout<<horario[i][j][k]<<'-'<<horario[i][j][k+1]<<" ";}
+                k=tamaño_Caracter_matriz;
+            }
+            if(i==0 and j>0){
+                horario[i][j][k]=diass;
+               // cout<<horario[i][j][k];//aqui toma un valor numerico
+                if((horario[i][j][k]==0)){cout<<"L";}
+                else if((horario[i][j][k]==1)){cout<<"M";}
+                else if((horario[i][j][k]==2)){cout<<"W";}
+                else if((horario[i][j][k]==3)){cout<<"J";}
+                else if((horario[i][j][k]==4)){cout<<"V";}
+                else if((horario[i][j][k]==5)){cout<<"S";}
+                else if((horario[i][j][k]==6)){cout<<"D";}
+                diass++;
+                //cout<<" ";
+                k=tamaño_Caracter_matriz;
+
+
+        }
+    }cout<<"  ";
+}cout<<endl;
+}
+}
