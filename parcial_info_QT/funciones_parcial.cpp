@@ -523,3 +523,144 @@ int diass=0;
 }cout<<endl;
 }
 }
+void imp_horarioV2(unsigned long long *** horario,unsigned long long hora_total,int dias,unsigned long long tamaño_Caracter_matriz,unsigned long long hora_inic,unsigned long long hora_fin){
+int diass=0;
+    for(unsigned long long i=0;i<hora_total+1;i++){
+    for(int j=0;j<dias+1;j++){
+        for(unsigned long long k=0;k<tamaño_Caracter_matriz;k++){
+            cout<<horario[i][j][k];
+
+
+        }
+    cout<<"  ";
+}cout<<endl;
+}
+}
+bool abrio_archivo(char *nombre_pensum){
+    fstream base_de_datos;
+    base_de_datos.open(nombre_pensum,ios::in | ios::binary | ios::ate);
+    if(base_de_datos.is_open()){
+        //tamaño=base_de_datos.tellg();//toma la longitud de datos hasta donde se encuentra el cursor
+        //base_de_datos.seekg(0);//colocamos el puntero en la primer posicion
+         base_de_datos.close();
+        return true;
+        }
+    else {
+         base_de_datos.close();
+    return false;
+}}
+void codigo_int_a_char(int codigo_materia,char*materias_pensum, unsigned long long tam_c_pensum){
+    char codigo_m[tam_c_pensum];
+    //char codigo_mf[tam_c_pensum];
+    unsigned long long contador=0,cd=codigo_materia;
+    for(unsigned long long i=0;i<tam_c_pensum;i++){codigo_m[i]='\0';*(materias_pensum+i)='\0';}
+    //pasamos de int a char modificar int por numero mas grande
+
+    while ((cd > 0) and (contador < tam_c_pensum)) { // Asegurar que cd sea mayor a 0 y contador esté dentro de los límites del arreglo
+        int modulo = cd % 10;
+        codigo_m[contador] = modulo + 48;
+        cd = cd / 10;
+        contador++; // Incrementar contador en cada iteración
+    }
+    for(int voltear=0,n=1;voltear<contador;voltear++,n++){
+        *(materias_pensum+voltear)=codigo_m[contador-n];}
+
+    *(materias_pensum+contador)='\0';//le colocamos el valor nulo para decir que se termina el arreglo
+
+}
+
+void datos_materias(char****pensum,char****materias,unsigned long long****horario,unsigned long long lineas,int grupos,unsigned long long tam_max,unsigned long long cant_materias,int hora_inicio_estudio,int hora_fin_estudio){
+        int hora_total=(hora_fin_estudio-hora_inicio_estudio);
+        int horas_t_clase=0,horas_materia=0,dia_clase,nomb_cod_mat,cant_dias,in_clase,fin_clase,materia_orden=0;
+        char codigo_char[tam_max];
+        for (int i=1,materia_orden=1;i<=cant_materias;i++,materia_orden++)
+         {horas_materia=0;
+            bool existe=false;
+            while(existe==false){
+         cout << "ingrese el nombre/codigo de una de las materias que matriculo: " << "\n";
+
+         cin >> nomb_cod_mat;
+         //mirar si ese codigo o nombre de la materia si esta en el pensum
+         existe=existe_cod(pensum,nomb_cod_mat,lineas,tam_max);
+         if(existe==false){cout<<"el codigo no existe"<<endl;}//no existe
+         else {cout<<"se encontro la materia"<<endl;
+        codigo_int_a_char(nomb_cod_mat,codigo_char,tam_max);//la funcion para pasar codigo numero a char
+        //fincion que nos de la pocicion del codigo de materia del pensum para guardarlo
+        //en la matriz materias matriculadas
+         }}
+         cout<<"cuantos dias a la semana ve esta materia: "<< "\n";
+
+         cin>>cant_dias;
+         while(cant_dias>6 or cant_dias<=0)
+         {
+             cout<<"ingrese una cantidad de dias valida maximo 6 minimo 1 (solo se ven clases de lunes a sabado): "<<"\n";
+             cin>>cant_dias;
+         }
+         if(cant_dias<=6 and cant_dias>0)//solo se ve clase de lunes a sabado
+         {
+         for (int i=0;i<cant_dias;i++) //pregunta que dias se ve esa materia segun el numero de veces que ve la materia en la semana
+         {
+         cout<<"ingrese el dia en el que ve esa materia siendo el Lunes=1 Martes=2 Miercoles=3 Jueves=4 Viernes=5 Sabado=6: "<< "\n";
+         cin>> dia_clase;
+
+         while ((dia_clase <1) or (dia_clase>6))
+         {
+             cout<<"ingrese un numero valido"<<"\n";
+             cin>>dia_clase;
+         }
+         if ((dia_clase>=1) and (dia_clase<=6))
+         {
+         cout<<"ingrese la hora de inicio de la clase en horario militar: "<< "\n";
+         cin>> in_clase;
+         cout<< "ingrese la hora de finalizacion de la clase en horario militar: "<< "\n";
+
+         cin>> fin_clase;
+         while (in_clase>=fin_clase)
+         {
+         cout<<"ingrese un horario de inicio de clase y de finalizacion de clase valido (la hora de inicio no puede ser mayor que la hora de finalizacion)"<<"\n";
+         cout<<"ingrese la hora de inicio de la clase en horario militar: "<< "\n";
+         cin>> in_clase;
+         cout<< "ingrese la hora de finalizacion de la clase en horario militar: "<< "\n";
+         cin>> fin_clase;
+         }
+        //agregamos la condicion por si coloca una hora diferente a la jornada de estudio
+         while((in_clase<hora_inicio_estudio)or (fin_clase>hora_fin_estudio)) {
+             cout<<"ingrese un horario de inicio de clase y de finalizacion de clase valido hora inicio y hora fin no pueden ser mayor o menor a la jornada de estudio"<<"\n";
+             cout<<"La jornada de estudio es de: "<<hora_inicio_estudio<<"horas hasta "<<hora_fin_estudio<<"horas"<<endl;
+             cout<<"ingrese la hora de inicio de la clase en horario militar: "<< "\n";
+             cin>> in_clase;
+             cout<< "ingrese la hora de finalizacion de la clase en horario militar: "<< "\n";
+             cin>> fin_clase;
+               if(in_clase>=fin_clase){cout<<"el horario de inicio de clase nuepuede ser mayor que el de fin de clases"<<endl;
+         in_clase=hora_inicio_estudio-1;
+         fin_clase=hora_fin_estudio+1;
+         }
+         }
+         }
+          if (in_clase<fin_clase and in_clase>=hora_inicio_estudio and fin_clase<=hora_fin_estudio)
+         {
+              horas_materia=horas_materia+(fin_clase-in_clase);
+         horas_t_clase=horas_t_clase +(fin_clase-in_clase);//horas de claseeee
+         cout<<"horas totales de la materia son: "<<horas_materia<<endl;
+         cout<<"las horas de clase totales son: "<<horas_t_clase<< "\n";
+         //agregamos horario a matriz
+         int hora_clase=(in_clase - hora_inicio_estudio);
+         for(int k=0;k<horas_materia;k++){
+
+         (*horario)[dia_clase][hora_clase+k][0]=materia_orden;
+         cout<<(*horario)[dia_clase][(hora_clase+k)][0]<<endl;}
+         //in_clase++;//inclase va a estar limitado por horas de estudio
+//imprimimos para ver si se guardo
+         imp_horario(*horario,hora_total,7,tam_max,hora_inicio_estudio,hora_fin_estudio);
+         }
+         }
+         //int horas_t_semana= horas_t_clase;
+         //int horas_ttss= horas_t_semana+horas_t_clase;
+         //cout<<"las horas de clase totales de esa materia en la semana son: "<<horas_ttss<< "\n";
+         //comparas horas_ttss (horas totales semana de esa materia) con las horas docente del pensum
+         //int horas_ttss= horas_t_semana+horas_t_clase;
+         }//cierre while escoger dia clase
+         }
+
+    }
+

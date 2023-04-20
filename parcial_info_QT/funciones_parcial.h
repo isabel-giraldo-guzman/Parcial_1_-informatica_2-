@@ -30,5 +30,7 @@ bool existe_cod(char****pensum,int codigo_materia,unsigned long long materias_pe
 
 void imp_horario(unsigned long long *** horario,unsigned long long hora_total,int dias,unsigned long long tamaño_Caracter_matriz,unsigned long long hora_inic,unsigned long long hora_fin);
 void inicializar_horary(unsigned long long**** horary, unsigned long long tamaño, int dias, unsigned long long horas_total);
-
+bool abrio_archivo(char *nombre_pensum);
+void codigo_int_a_char(int codigo_materia,char*materias_pensum, long long tam_c_pensum);
+void datos_materias(char****pensum,char****materias,unsigned long long****horario,unsigned long long lineas,int grupos,unsigned long long tam_max,unsigned long long cant_materias,int hora_inicio_estudio,int hora_fin_estudio);
 #endif // FUNCIONES_PARCIAL_H
