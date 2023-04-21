@@ -327,8 +327,9 @@ void inicializar_horary(unsigned long long**** horary, unsigned long long tamañ
         (*horary)[i] = new unsigned long long*[dias + 1];
         for (int j = 0; j <= dias; j++) {
             (*horary)[i][j] = new unsigned long long[tamaño];
-            for (unsigned long long k = 0; k < tamaño; k++) {
-                ((*horary)[i][j][k]) = 0;
+            for (unsigned long long k = 1; k < tamaño; k++) {
+                ((*horary)[i][j][0]) = 0;
+                ((*horary)[i][j][k]) = '\0';
             }
         }
     }
@@ -469,16 +470,28 @@ int diass=0;
 void imp_horarioV2(unsigned long long *** horario,unsigned long long hora_total,int dias,unsigned long long tamaño_Caracter_matriz,unsigned long long hora_inic,unsigned long long hora_fin){
 int diass=0;
     for(unsigned long long i=0;i<hora_total+1;i++){
-    for(int j=0;j<dias+1;j++){
-        for(unsigned long long k=0;k<tamaño_Caracter_matriz;k++){
-            cout<<horario[i][j][k];
-
+    for(int j=0;j<dias+1;j++){if(j==1){j++;}
+        if((j==0) and (i==0)){cout<<" H-D ";}
+        else if((i==0) and (j==2)){cout<<"L";}
+        else if((i==0) and (j==3)){cout<<"M";}
+        else if((i==0) and (j==4)){cout<<"W";}
+        else if((i==0) and (j==5)){cout<<"J";}
+        else if((i==0) and (j==6)){cout<<"V";}
+        else if((i==0) and (j==7)){cout<<"S";}
+        else if((i>0)and(j==0)){if(horario[i][j][0]<9){cout<<"0"<<horario[i][j][0]<<"-"<<"0"<<((horario[i][j][0])+1);}
+            else if(horario[i][j][0]==9){cout<<"0"<<horario[i][j][0]<<"-"<<((horario[i][j][0])+1);}
+                    else{cout<<horario[i][j][0]<<"-"<<((horario[i][j][0])+1);
 
         }
-    cout<<"  ";
-}cout<<endl;
-}
-}
+        }
+        else{
+
+               cout << horario[i][j][0];}
+    cout<<" ";}
+
+cout<<endl;
+}}
+
 bool abrio_archivo(char *nombre_pensum){
     fstream base_de_datos;
     base_de_datos.open(nombre_pensum,ios::in | ios::binary | ios::ate);
@@ -516,7 +529,7 @@ void datos_materias(char****pensum,char****materias,unsigned long long****horari
         int hora_total=(hora_fin_estudio-hora_inicio_estudio);
         int horas_t_clase=0,horas_materia=0,dia_clase,nomb_cod_mat,cant_dias,in_clase,fin_clase,materia_orden=0;
         char codigo_char[tam_max];
-        for (int i=1,materia_orden=1;i<=cant_materias;i++,materia_orden++)
+        for (int i=0,materia_orden=1;i<=cant_materias;i++,materia_orden++)
          {horas_materia=0;
             bool existe=false;
             while(existe==false){
@@ -583,18 +596,23 @@ void datos_materias(char****pensum,char****materias,unsigned long long****horari
           if (in_clase<fin_clase and in_clase>=hora_inicio_estudio and fin_clase<=hora_fin_estudio)
          {
               horas_materia=horas_materia+(fin_clase-in_clase);
+
          horas_t_clase=horas_t_clase +(fin_clase-in_clase);//horas de claseeee
          cout<<"horas totales de la materia son: "<<horas_materia<<endl;
          cout<<"las horas de clase totales son: "<<horas_t_clase<< "\n";
          //agregamos horario a matriz
-         int hora_clase=(in_clase - hora_inicio_estudio);
-         for(int k=0;k<horas_materia;k++){
+         int hora_clase=0;
+         hora_clase=(in_clase - hora_inicio_estudio);
+         int hora_materia_dia=fin_clase-in_clase;
+         for(int k=0;k<hora_materia_dia;k++){
 
-         (*horario)[dia_clase][hora_clase+k][0]=materia_orden;
-         cout<<(*horario)[dia_clase][(hora_clase+k)][0]<<endl;}
+         (*horario)[(hora_clase+1)+k][dia_clase+1][0]=materia_orden;
+             in_clase=0;
+         //cout<<(*horario)[dia_clase+1][(hora_clase+k)][0]<<endl;
+         }
          //in_clase++;//inclase va a estar limitado por horas de estudio
 //imprimimos para ver si se guardo
-         imp_horario(*horario,hora_total,7,tam_max,hora_inicio_estudio,hora_fin_estudio);
+         imp_horarioV2(*horario,hora_total,7,tam_max,hora_inicio_estudio,hora_fin_estudio);
          }
          }
 
